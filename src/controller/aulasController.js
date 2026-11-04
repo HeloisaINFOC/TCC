@@ -1,5 +1,6 @@
 import * as service from '../service/aulasService.js';
 
+
 import { Router } from "express";
 import { getAuthentication } from '../utils/jwt.js';
 const endpoints = Router();
@@ -12,6 +13,9 @@ endpoints.get('/aula/:id', auth, async (req, resp) => {
     let id = req.params.id;
 
     let aula = await service.getAula(id);
+    if (!aula)
+        return resp.status(404).send({ erro: 'Aula não encontrada' });
+
     resp.send(aula);
 })
 
@@ -19,7 +23,7 @@ endpoints.get('/aula/:id', auth, async (req, resp) => {
 endpoints.get('/curso/:idCurso/aulas', auth, async (req, resp) => {
     let idCurso = req.params.idCurso;
 
-    let aulas = await service.listarAulas(idCurso);
+    let aulas = await service.listAulas(idCurso);
     resp.send(aulas);
 })
 
@@ -27,7 +31,7 @@ endpoints.get('/curso/:idCurso/aulas', auth, async (req, resp) => {
 endpoints.post('/aula', authInstrutor, async (req, resp) => {
     let aula = req.body;
 
-    let id = await service.salvarAula(aula);
+    let id = await service.saveAula(aula);
     resp.send({ id });
 })
 
@@ -36,7 +40,7 @@ endpoints.put('/aula/:id', authInstrutor, async (req, resp) => {
     let id = req.params.id;
     let aula = req.body;
 
-    await service.alterarAula(id, aula);
+    await service.updateAula(id, aula);
     resp.send();
 })
 
@@ -44,7 +48,7 @@ endpoints.put('/aula/:id', authInstrutor, async (req, resp) => {
 endpoints.delete('/aula/:id', authInstrutor, async (req, resp) => {
     let id = req.params.id;
 
-    await service.removerAula(id);
+    await service.deleteAula(id);
     resp.send();
 })
 

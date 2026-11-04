@@ -1,49 +1,52 @@
-import * as service from '../service/categoriasService.js';
+import * as service from '../service/certificadosService.js';
+
 
 import { Router } from "express";
 import { getAuthentication } from '../utils/jwt.js';
 const endpoints = Router();
 
 let auth = getAuthentication();
-let authAdmin = getAuthentication(['admin']);
 
 
-endpoints.get('/categorias', async (req, resp) => {
-    let categorias = await service.listarCategorias();
-    resp.send(categorias);
+endpoints.get('/certificado/validar/:codigo', async (req, resp) => {
+    let codigo = req.params.codigo;
+
+    let certificado = await service.getCertificadoByCodigo(codigo);
+    if (!certificado)
+        return resp.status(404).send({ erro: 'Certificado inválido' });
+
+    resp.send(certificado);
 })
 
 
-endpoints.get('/categoria/:id', async (req, resp) => {
+endpoints.get('/conta/certificados', auth, async (req, resp) => {
+    let idUsuario = req.user.id;
+
+    let certificados = await service.listCertificados(idUsuario);
+    resp.send(certificados);
+})
+
+
+endpoints.get('/certificado/:id', auth, async (req, resp) => {
     let id = req.params.id;
 
-    let categoria = await service.getCategoria(id);
-    resp.send(categoria);
+    let certificado = await service.getCertificado(id);
+    if (!certificado)
+        return resp.status(404).send({ erro: 'Certificado não encontrado' });
+
+    resp.send(certificado);
 })
 
 
-endpoints.post('/categoria', authAdmin, async (req, resp) => {
-    let categoria = req.body;
+endpoints.post('/certificado', auth, async (req, resp) => {
+    let certificado = req.body;
+    certificado.idUsuario = req.user.id;
 
-    let id = await service.salvarCategoria(categoria);
-    resp.send({ id });
-})
+    let resultado = await service.saveCertificado(certificado);
+    if (resultado.erro)
+        return resp.status(400).send(resultado);
 
-
-endpoints.put('/categoria/:id', authAdmin, async (req, resp) => {
-    let id = req.params.id;
-    let categoria = req.body;
-
-    await service.alterarCategoria(id, categoria);
-    resp.send();
-})
-
-
-endpoints.delete('/categoria/:id', authAdmin, async (req, resp) => {
-    let id = req.params.id;
-
-    await service.removerCategoria(id);
-    resp.send();
+    resp.send(resultado);
 })
 
 

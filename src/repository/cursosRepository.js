@@ -1,144 +1,111 @@
-import con from './connection.js';
+import { con } from './connection.js';
 
 
-export async function listarCursos() {
-    const comando = `
-        select c.id,
-               c.titulo,
-               c.descricao,
-               c.imagem,
-               c.id_categoria   as idCategoria,
-               cat.nome         as categoria,
-               c.id_instrutor   as idInstrutor,
-               u.nome           as instrutor
-          from cursos c
-          join categorias cat on cat.id = c.id_categoria
-          join usuarios u     on u.id = c.id_instrutor
-         order by c.id desc
-    `;
+export async function saveCurso(curso) {
+  const command = `
+    insert into cursos (titulo, descricao, imagem, id_categoria, id_instrutor)
+      values (?, ?, ?, ?, ?)
+  `;
 
-    let resp = await con.query(comando);
-    let linhas = resp[0];
+  const [result] = await con.query(command, [
+    curso.titulo,
+    curso.descricao,
+    curso.imagem,
+    curso.idCategoria,
+    curso.idInstrutor
+  ]);
 
-    return linhas;
+  return result.insertId;
 }
 
 
-export async function buscarCursoPorId(id) {
-    const comando = `
-        select c.id,
-               c.titulo,
-               c.descricao,
-               c.imagem,
-               c.id_categoria   as idCategoria,
-               cat.nome         as categoria,
-               c.id_instrutor   as idInstrutor,
-               u.nome           as instrutor
-          from cursos c
-          join categorias cat on cat.id = c.id_categoria
-          join usuarios u     on u.id = c.id_instrutor
-         where c.id = ?
-    `;
+export async function getCurso(id) {
+  const command = `
+    select c.id,
+           c.titulo,
+           c.descricao,
+           c.imagem,
+           c.id_categoria   as idCategoria,
+           cat.nome         as categoria,
+           c.id_instrutor   as idInstrutor,
+           u.nome           as instrutor
+      from cursos c
+      join categorias cat on cat.id = c.id_categoria
+      join usuarios u     on u.id = c.id_instrutor
+     where c.id = ?
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let linhas = resp[0];
-
-    return linhas[0];
+  const [linhas] = await con.query(command, [id]);
+  return linhas[0];
 }
 
 
-export async function listarCursosPorCategoria(idCategoria) {
-    const comando = `
-        select c.id,
-               c.titulo,
-               c.descricao,
-               c.imagem,
-               c.id_categoria   as idCategoria,
-               u.nome           as instrutor
-          from cursos c
-          join usuarios u on u.id = c.id_instrutor
-         where c.id_categoria = ?
-         order by c.id desc
-    `;
+export async function listCursos() {
+  const command = `
+    select c.id,
+           c.titulo,
+           c.descricao,
+           c.imagem,
+           c.id_categoria   as idCategoria,
+           cat.nome         as categoria,
+           u.nome           as instrutor
+      from cursos c
+      join categorias cat on cat.id = c.id_categoria
+      join usuarios u     on u.id = c.id_instrutor
+     order by c.id desc
+  `;
 
-    let resp = await con.query(comando, [idCategoria]);
-    let linhas = resp[0];
-
-    return linhas;
+  const [linhas] = await con.query(command);
+  return linhas;
 }
 
 
-export async function buscarCursosPorNome(busca) {
-    const comando = `
-        select c.id,
-               c.titulo,
-               c.descricao,
-               c.imagem,
-               c.id_categoria   as idCategoria,
-               u.nome           as instrutor
-          from cursos c
-          join usuarios u on u.id = c.id_instrutor
-         where c.titulo like ?
-         order by c.titulo
-    `;
+export async function listCursosByCategoria(idCategoria) {
+  const command = `
+    select c.id,
+           c.titulo,
+           c.descricao,
+           c.imagem,
+           c.id_categoria   as idCategoria,
+           cat.nome         as categoria,
+           u.nome           as instrutor
+      from cursos c
+      join categorias cat on cat.id = c.id_categoria
+      join usuarios u     on u.id = c.id_instrutor
+     where c.id_categoria = ?
+     order by c.id desc
+  `;
 
-    let resp = await con.query(comando, ['%' + busca + '%']);
-    let linhas = resp[0];
-
-    return linhas;
+  const [linhas] = await con.query(command, [idCategoria]);
+  return linhas;
 }
 
 
-export async function inserirCurso(curso) {
-    const comando = `
-        insert into cursos (titulo, descricao, imagem, id_categoria, id_instrutor)
-        values (?, ?, ?, ?, ?)
-    `;
+export async function updateCurso(id, curso) {
+  const command = `
+    update cursos
+       set titulo       = ?,
+           descricao    = ?,
+           imagem       = ?,
+           id_categoria = ?
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [
-        curso.titulo,
-        curso.descricao,
-        curso.imagem,
-        curso.idCategoria,
-        curso.idInstrutor
-    ]);
-    let info = resp[0];
-
-    return info.insertId;
+  await con.query(command, [
+    curso.titulo,
+    curso.descricao,
+    curso.imagem,
+    curso.idCategoria,
+    id
+  ]);
 }
 
 
-export async function alterarCurso(id, curso) {
-    const comando = `
-        update cursos
-           set titulo       = ?,
-               descricao    = ?,
-               imagem       = ?,
-               id_categoria = ?
-         where id = ?
-    `;
+export async function deleteCurso(id) {
+  const command = `
+    delete from cursos
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [
-        curso.titulo,
-        curso.descricao,
-        curso.imagem,
-        curso.idCategoria,
-        id
-    ]);
-    let info = resp[0];
-
-    return info.affectedRows;
-}
-
-
-export async function removerCurso(id) {
-    const comando = `
-        delete from cursos
-         where id = ?
-    `;
-
-    let resp = await con.query(comando, [id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [id]);
 }

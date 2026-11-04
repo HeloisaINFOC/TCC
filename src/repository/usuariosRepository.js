@@ -1,99 +1,86 @@
-import con from './connection.js';
+import { con } from './connection.js';
 
 
-export async function buscarUsuarioPorId(id) {
-    // não retorna a senha de propósito
-    const comando = `
-        select id,
-               nome,
-               email,
-               tipo,
-               criado_em as criadoEm
-          from usuarios
-         where id = ?
-    `;
+export async function saveUsuario(usuario) {
+  const command = `
+    insert into usuarios (nome, email, senha)
+      values (?, ?, ?)
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let linhas = resp[0];
+  const [result] = await con.query(command, [
+    usuario.nome,
+    usuario.email,
+    usuario.senha
+  ]);
 
-    return linhas[0];
+  return result.insertId;
 }
 
 
-export async function buscarUsuarioPorEmail(email) {
-    // usado no login: retorna a senha (hash) para o service comparar
-    const comando = `
-        select id,
-               nome,
-               email,
-               senha,
-               tipo
-          from usuarios
-         where email = ?
-    `;
+export async function getUsuario(id) {
+  const command = `
+    select id,
+           nome,
+           email,
+           tipo
+      from usuarios
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [email]);
-    let linhas = resp[0];
-
-    return linhas[0];
+  const [linhas] = await con.query(command, [id]);
+  return linhas[0];
 }
 
 
-export async function inserirUsuario(usuario) {
-    const comando = `
-        insert into usuarios (nome, email, senha, tipo)
-        values (?, ?, ?, ?)
-    `;
+export async function getUsuarioByEmail(email) {
+  const command = `
+    select id
+      from usuarios
+     where email = ?
+  `;
 
-    let resp = await con.query(comando, [
-        usuario.nome,
-        usuario.email,
-        usuario.senha,
-        usuario.tipo ?? 'aluno'
-    ]);
-    let info = resp[0];
-
-    return info.insertId;
+  const [linhas] = await con.query(command, [email]);
+  return linhas[0];
 }
 
 
-export async function alterarUsuario(id, usuario) {
-    const comando = `
-        update usuarios
-           set nome  = ?,
-               email = ?
-         where id = ?
-    `;
+export async function getUsuarioByLogin(email, senha) {
+  const command = `
+    select id,
+           nome,
+           email,
+           tipo
+      from usuarios
+     where email = ?
+       and senha = ?
+  `;
 
-    let resp = await con.query(comando, [usuario.nome, usuario.email, id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  const [linhas] = await con.query(command, [email, senha]);
+  return linhas[0];
 }
 
 
-export async function alterarSenha(id, senhaHash) {
-    const comando = `
-        update usuarios
-           set senha = ?
-         where id = ?
-    `;
+export async function updateUsuario(id, usuario) {
+  const command = `
+    update usuarios
+       set nome  = ?,
+           email = ?
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [senhaHash, id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [
+    usuario.nome,
+    usuario.email,
+    id
+  ]);
 }
 
 
-export async function removerUsuario(id) {
-    const comando = `
-        delete from usuarios
-         where id = ?
-    `;
+export async function deleteUsuario(id) {
+  const command = `
+    delete from usuarios
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [id]);
 }

@@ -1,82 +1,109 @@
-create database cursosDB;
-use cursosDB;
+create database bancoimpulsa;
+use bancoimpulsa;
+drop database bancoimpulsa;
 
-create table usuarios (
-  id          int primary key auto_increment,
-  nome        varchar(100) not null,
-  email       varchar(100) not null unique,
-  senha       varchar(255) not null,
-  tipo        varchar(20) not null default 'aluno',
-  criado_em   datetime not null default current_timestamp
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    sobrenome VARCHAR(100),
+    email VARCHAR(150) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    foto VARCHAR(255),
+    data_nascimento DATE,
+    telefone VARCHAR(20),
+    status ENUM('ativo', 'inativo', 'bloqueado')
+        NOT NULL DEFAULT 'ativo',
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-create table categorias (
-  id    int primary key auto_increment,
-  nome  varchar(100) not null unique
+CREATE TABLE categorias (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL UNIQUE,
+    descricao TEXT,
+    imagem VARCHAR(255)
 );
 
-create table cursos (
-  id            int primary key auto_increment,
-  titulo        varchar(150) not null,
-  descricao     text,
-  imagem        varchar(500),
-  id_categoria  int not null,
-  id_instrutor  int not null,
-  criado_em     datetime not null default current_timestamp,
-  foreign key (id_categoria) references categorias(id),
-  foreign key (id_instrutor) references usuarios(id) on delete cascade
+CREATE TABLE cursos (
+    id_curso INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(150) NOT NULL,
+    descricao TEXT NOT NULL,
+    imagem_capa VARCHAR(255),
+    modalidade ENUM('gratuito')
+        NOT NULL DEFAULT 'gratuito',
+    carga_horaria INT NOT NULL DEFAULT 0,
+    id_categoria INT NOT NULL,
+    status ENUM('rascunho', 'publicado', 'arquivado')
+        NOT NULL DEFAULT 'rascunho',
+
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id)
 );
 
-create table aulas (
-  id         int primary key auto_increment,
-  id_curso   int not null,
-  titulo     varchar(150) not null,
-  descricao  text,
-  video_url  varchar(500),
-  ordem      int not null default 1,
-  duracao    int,
-  foreign key (id_curso) references cursos(id) on delete cascade
+
+CREATE TABLE aulas (
+    id_aula INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    tipo ENUM('video', 'texto', 'arquivo', 'link')
+        NOT NULL DEFAULT 'video',
+    conteudo TEXT,
+    url_video VARCHAR(500),
+    arquivo VARCHAR(255),
+    duracao_minutos INT DEFAULT 0,
+    ordem INT NOT NULL
 );
 
-create table inscricoes (
-  id              int primary key auto_increment,
-  id_usuario      int not null,
-  id_curso        int not null,
-  data_inscricao  datetime not null default current_timestamp,
-  unique (id_usuario, id_curso),
-  foreign key (id_usuario) references usuarios(id) on delete cascade,
-  foreign key (id_curso) references cursos(id) on delete cascade
+
+CREATE TABLE inscricoes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_aluno INT NOT NULL,
+    id_curso INT NOT NULL,
+    data_inscricao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('ativa', 'concluida', 'cancelada')
+        NOT NULL DEFAULT 'ativa',
+    percentual_conclusao DECIMAL(5,2)
+        NOT NULL DEFAULT 0.00,
+
+    FOREIGN KEY (id_aluno) REFERENCES usuarios(id),
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
+
+    UNIQUE (id_aluno, id_curso)
 );
 
-create table progresso_aulas (
-  id              int primary key auto_increment,
-  id_usuario      int not null,
-  id_aula         int not null,
-  concluida       boolean not null default true,
-  data_conclusao  datetime,
-  unique (id_usuario, id_aula),
-  foreign key (id_usuario) references usuarios(id) on delete cascade,
-  foreign key (id_aula) references aulas(id) on delete cascade
+CREATE TABLE progresso_aulas (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_inscricao INT NOT NULL,
+    id_aula INT NOT NULL,
+
+    concluida BOOLEAN NOT NULL DEFAULT FALSE,
+
+    data_inicio DATETIME,
+    data_conclusao DATETIME,
+
+    ultima_posicao_segundos INT NOT NULL DEFAULT 0,
+
+    FOREIGN KEY (id_inscricao)
+        REFERENCES inscricoes(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_aula)
+        REFERENCES aulas(id_aula)
+        ON DELETE CASCADE,
+
+    UNIQUE (id_inscricao, id_aula)
 );
 
-create table certificados (
-  id            int primary key auto_increment,
-  id_usuario    int not null,
-  id_curso      int not null,
-  codigo        varchar(50) not null unique,
-  data_emissao  datetime not null default current_timestamp,
-  unique (id_usuario, id_curso),
-  foreign key (id_usuario) references usuarios(id) on delete cascade,
-  foreign key (id_curso) references cursos(id) on delete cascade
+CREATE TABLE certificados (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+
+    id_inscricao INT NOT NULL UNIQUE,
+
+    codigo VARCHAR(100) NOT NULL UNIQUE,
+
+    data_emissao DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    arquivo_pdf VARCHAR(255),
+
+    FOREIGN KEY (id_inscricao)
+        REFERENCES inscricoes(id)
+        ON DELETE CASCADE
 );
-
-insert into categorias (nome) values
-  ('Programação'),
-  ('Design'),
-  ('Marketing'),
-  ('Idiomas'),
-  ('Negócios');
-
--- para criar um admin ou instrutor: cadastre a conta pelo site e depois rode
--- update usuarios set tipo = 'admin' where email = 'seu@email.com';
--- update usuarios set tipo = 'instrutor' where email = 'outro@email.com';

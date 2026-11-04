@@ -1,100 +1,89 @@
-import con from './connection.js';
+import { con } from './connection.js';
 
 
-export async function buscarAulaPorId(id) {
-    const comando = `
-        select id,
-               id_curso   as idCurso,
-               titulo,
-               descricao,
-               video_url  as videoUrl,
-               ordem,
-               duracao
-          from aulas
-         where id = ?
-    `;
+export async function saveAula(aula) {
+  const command = `
+    insert into aulas (id_curso, titulo, descricao, video_url, ordem, duracao)
+      values (?, ?, ?, ?, ?, ?)
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let linhas = resp[0];
+  const [result] = await con.query(command, [
+    aula.idCurso,
+    aula.titulo,
+    aula.descricao,
+    aula.videoUrl,
+    aula.ordem,
+    aula.duracao
+  ]);
 
-    return linhas[0];
+  return result.insertId;
 }
 
 
-export async function listarAulasPorCurso(idCurso) {
-    const comando = `
-        select id,
-               id_curso   as idCurso,
-               titulo,
-               descricao,
-               video_url  as videoUrl,
-               ordem,
-               duracao
-          from aulas
-         where id_curso = ?
-         order by ordem
-    `;
+export async function getAula(id) {
+  const command = `
+    select id,
+           id_curso    as idCurso,
+           titulo,
+           descricao,
+           video_url   as videoUrl,
+           ordem,
+           duracao
+      from aulas
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [idCurso]);
-    let linhas = resp[0];
-
-    return linhas;
+  const [linhas] = await con.query(command, [id]);
+  return linhas[0];
 }
 
 
-export async function inserirAula(aula) {
-    const comando = `
-        insert into aulas (id_curso, titulo, descricao, video_url, ordem, duracao)
-        values (?, ?, ?, ?, ?, ?)
-    `;
+export async function listAulas(idCurso) {
+  const command = `
+    select id,
+           id_curso    as idCurso,
+           titulo,
+           descricao,
+           video_url   as videoUrl,
+           ordem,
+           duracao
+      from aulas
+     where id_curso = ?
+     order by ordem
+  `;
 
-    let resp = await con.query(comando, [
-        aula.idCurso,
-        aula.titulo,
-        aula.descricao,
-        aula.videoUrl,
-        aula.ordem,
-        aula.duracao
-    ]);
-    let info = resp[0];
-
-    return info.insertId;
+  const [linhas] = await con.query(command, [idCurso]);
+  return linhas;
 }
 
 
-export async function alterarAula(id, aula) {
-    const comando = `
-        update aulas
-           set titulo    = ?,
-               descricao = ?,
-               video_url = ?,
-               ordem     = ?,
-               duracao   = ?
-         where id = ?
-    `;
+export async function updateAula(id, aula) {
+  const command = `
+    update aulas
+       set titulo    = ?,
+           descricao = ?,
+           video_url = ?,
+           ordem     = ?,
+           duracao   = ?
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [
-        aula.titulo,
-        aula.descricao,
-        aula.videoUrl,
-        aula.ordem,
-        aula.duracao,
-        id
-    ]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [
+    aula.titulo,
+    aula.descricao,
+    aula.videoUrl,
+    aula.ordem,
+    aula.duracao,
+    id
+  ]);
 }
 
 
-export async function removerAula(id) {
-    const comando = `
-        delete from aulas
-         where id = ?
-    `;
+export async function deleteAula(id) {
+  const command = `
+    delete from aulas
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [id]);
 }

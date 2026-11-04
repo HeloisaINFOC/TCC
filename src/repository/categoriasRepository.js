@@ -1,71 +1,62 @@
-import con from './connection.js';
+import { con } from './connection.js';
 
 
-export async function listarCategorias() {
-    const comando = `
-        select id,
-               nome
-          from categorias
-         order by nome
-    `;
+export async function saveCategoria(categoria) {
+  const command = `
+    insert into categorias (nome)
+      values (?)
+  `;
 
-    let resp = await con.query(comando);
-    let linhas = resp[0];
+  const [result] = await con.query(command, [
+    categoria.nome
+  ]);
 
-    return linhas;
+  return result.insertId;
 }
 
 
-export async function buscarCategoriaPorId(id) {
-    const comando = `
-        select id,
-               nome
-          from categorias
-         where id = ?
-    `;
+export async function getCategoria(id) {
+  const command = `
+    select id,
+           nome
+      from categorias
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let linhas = resp[0];
-
-    return linhas[0];
+  const [linhas] = await con.query(command, [id]);
+  return linhas[0];
 }
 
 
-export async function inserirCategoria(categoria) {
-    const comando = `
-        insert into categorias (nome)
-        values (?)
-    `;
+export async function listCategorias() {
+  const command = `
+    select id,
+           nome
+      from categorias
+     order by nome
+  `;
 
-    let resp = await con.query(comando, [categoria.nome]);
-    let info = resp[0];
-
-    return info.insertId;
+  const [linhas] = await con.query(command);
+  return linhas;
 }
 
 
-export async function alterarCategoria(id, categoria) {
-    const comando = `
-        update categorias
-           set nome = ?
-         where id = ?
-    `;
+export async function updateCategoria(id, categoria) {
+  const command = `
+    update categorias
+       set nome = ?
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [categoria.nome, id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [categoria.nome, id]);
 }
 
 
-export async function removerCategoria(id) {
-    const comando = `
-        delete from categorias
-         where id = ?
-    `;
+export async function deleteCategoria(id) {
+  const command = `
+    delete from categorias
+     where id = ?
+  `;
 
-    let resp = await con.query(comando, [id]);
-    let info = resp[0];
-
-    return info.affectedRows;
+  await con.query(command, [id]);
 }

@@ -4,14 +4,11 @@ import { Router } from "express";
 import { getAuthentication } from '../utils/jwt.js';
 const endpoints = Router();
 
-let auth = getAuthentication();
 let authInstrutor = getAuthentication(['instrutor']);
 
 
 endpoints.get('/cursos', async (req, resp) => {
-    let busca = req.query.busca;
-
-    let cursos = await service.listarCursos(busca);
+    let cursos = await service.listCursos();
     resp.send(cursos);
 })
 
@@ -20,6 +17,9 @@ endpoints.get('/curso/:id', async (req, resp) => {
     let id = req.params.id;
 
     let curso = await service.getCurso(id);
+    if (!curso)
+        return resp.status(404).send({ erro: 'Curso não encontrado' });
+
     resp.send(curso);
 })
 
@@ -27,7 +27,7 @@ endpoints.get('/curso/:id', async (req, resp) => {
 endpoints.get('/categoria/:idCategoria/cursos', async (req, resp) => {
     let idCategoria = req.params.idCategoria;
 
-    let cursos = await service.listarCursosPorCategoria(idCategoria);
+    let cursos = await service.listCursosByCategoria(idCategoria);
     resp.send(cursos);
 })
 
@@ -36,7 +36,7 @@ endpoints.post('/curso', authInstrutor, async (req, resp) => {
     let curso = req.body;
     curso.idInstrutor = req.user.id;
 
-    let id = await service.salvarCurso(curso);
+    let id = await service.saveCurso(curso);
     resp.send({ id });
 })
 
@@ -45,7 +45,7 @@ endpoints.put('/curso/:id', authInstrutor, async (req, resp) => {
     let id = req.params.id;
     let curso = req.body;
 
-    await service.alterarCurso(id, curso);
+    await service.updateCurso(id, curso);
     resp.send();
 })
 
@@ -53,7 +53,7 @@ endpoints.put('/curso/:id', authInstrutor, async (req, resp) => {
 endpoints.delete('/curso/:id', authInstrutor, async (req, resp) => {
     let id = req.params.id;
 
-    await service.removerCurso(id);
+    await service.deleteCurso(id);
     resp.send();
 })
 
