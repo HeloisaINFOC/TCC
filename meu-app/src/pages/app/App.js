@@ -120,8 +120,8 @@ function Hero() {
           APRENDER É O NOVO DIVERTIDO
         </span>
         <h1>
-          <span className="h1-dark">Cursos<br />grátis.</span>
-          <span className="h1-pink">Ideias<br />gigantes.</span>
+          <span className="h1-dark">O saber<br />não custa,</span>
+          <span className="h1-pink">só<br />Impulsa.</span>
         </h1>
         <div className="hero-underline" />
         <p>Aprenda no seu ritmo, descubra novos talentos e transforme curiosidade em possibilidades. Sem pagar nadinha por isso.</p>
