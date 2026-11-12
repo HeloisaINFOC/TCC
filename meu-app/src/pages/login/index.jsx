@@ -6,7 +6,7 @@ function Login() {
       <h1>Login</h1>
       <input type="email" placeholder="Email" />
       <input type="password" placeholder="Senha" />
-      <button>Entrar</button>
+      <button>Entraaii</button>
     </div>
   );
 }

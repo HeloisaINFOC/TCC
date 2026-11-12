@@ -42,9 +42,13 @@ img { max-width: 100%; }
 .marca { display: flex; align-items: center; gap: .3rem; min-width: 9rem; }
 .logo { width: 7.3rem; object-fit: contain; }
 .logoo {
-  color: var(--roxo); font-size: 1.5rem;
-transform: translateY(-1.8rem) translateX(-1.4rem);
-  position: relative;
+  color: var(--roxo); 
+  font-size: 1.5rem;
+  position: relative; 
+top: -1.7rem;
+right: 1.4rem;
+font-weight: 800;
+
 
 }
 .perguntas { display: flex; gap: 5rem; }
@@ -128,12 +132,12 @@ transform: translateY(-1.8rem) translateX(-1.4rem);
 .barra div { width: 68%; height: 100%; background: var(--coral); border-radius: inherit; }
 
 /* LETREIRO */
-.letreiro { background: var(--navy); overflow: hidden; white-space: nowrap; padding: 2rem 0; }
+.letreiro { background: var(--navy); overflow: hidden; white-space: nowrap; padding: 1.5rem 0; }
 .letreiro-faixa { display: flex; width: max-content; animation: letreiro 35s linear infinite; }
 .letreiro-grupo { display: flex; align-items: center; flex-shrink: 0; }
 .letreiro-item {
   display: inline-flex; align-items: center; font-family: 'Manrope', sans-serif;
-  font-size: 1.25rem; font-weight: 800; letter-spacing: .14em; color: #e5847b;
+  font-size: 1.25rem; font-weight: 800; letter-spacing: .14em; color: #faa69f;
 }
 .letreiro-item b { margin: 0 2.6rem; color: #f4c542; font-size: 1.2rem; }
 @keyframes letreiro { to { transform: translateX(-50%); } }
