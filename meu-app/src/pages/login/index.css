@@ -1,0 +1,167 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f5e9;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202943;
+}
+
+/* CONTAINER PRINCIPAL */
+.cont {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.principal {
+  width: 100%;
+  max-width: 950px;
+}
+
+/* FUNDO DO CADASTRO */
+.background {
+  width: 100%;
+  background-color: #f8f5e9;
+  border: 2px solid #202943;
+  border-radius: 45px;
+  padding: 35px 30px;
+  box-shadow: 10px 10px 0px #202943;
+}
+
+/* BOAS-VINDAS */
+.boasvindas {
+  background-color: #ffffff;
+  border: 2px solid #202943;
+  border-radius: 30px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.boasvindas p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* TÍTULO */
+.topobackground {
+  background-color: #f4ebc6;
+  border: 2px solid #202943;
+  border-radius: 32px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.topobackground h1 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.topobackground p {
+  font-size: 16px;
+  color: #777777;
+}
+
+/* CAMPOS DO FORMULÁRIO */
+.preenchernome,
+.preencheremail,
+.criarsenha {
+  margin-bottom: 20px;
+}
+
+.preenchernome p,
+.preencheremail p,
+.criarsenha p {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #35415e;
+}
+
+/* INPUTS */
+.preenchernome input,
+.preencheremail input,
+.criarsenha input[type="text"],
+.criarsenha input[type="password"] {
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  background-color: #ffffff;
+  border: 2px solid #202943;
+  border-radius: 13px;
+  font-size: 16px;
+  outline: none;
+  color: #202943;
+}
+
+input::placeholder {
+  color: #a5a9b5;
+}
+
+.preenchernome input:focus,
+.preencheremail input:focus,
+.criarsenha input:focus {
+  border-color: #e7837d;
+}
+
+/* CHECKBOX */
+.criarsenha input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #e7837d;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-top: 15px;
+}
+
+.criarsenha label {
+  font-size: 14px;
+  color: #777777;
+  cursor: pointer;
+}
+
+/* BOTÃO */
+.botaocriar button {
+  width: 100%;
+  height: 54px;
+  background-color: #e7837d;
+  border: 2px solid #202943;
+  border-radius: 14px;
+  box-shadow: 5px 5px 0px #202943;
+  color: #202943;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.botaocriar button:hover {
+  background-color: #dc706b;
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .background {
+    padding: 20px;
+    border-radius: 30px;
+  }
+
+  .topobackground {
+    padding: 20px;
+  }
+
+  .topobackground h1 {
+    font-size: 25px;
+  }
+}
