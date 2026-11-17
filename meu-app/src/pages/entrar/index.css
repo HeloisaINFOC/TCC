@@ -1,0 +1,224 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap");
+
+.entrar-page {
+  min-height: 100vh;
+  background-color: #f8f5e9;
+  font-family: "Manrope", Arial, Helvetica, sans-serif;
+  color: #1c2438;
+  padding: 20px 30px 40px;
+}
+
+/* TOPO */
+.entrar-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.entrar-logo {
+  height: 70px;
+  width: auto;
+}
+
+.entrar-btn-acesso {
+  background-color: transparent;
+  border: 2px solid #1c2438;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #1c2438;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.entrar-btn-acesso:hover {
+  background-color: #f4ebc6;
+}
+
+/* MOLDURA EXTERNA */
+.entrar-moldura {
+  max-width: 760px;
+  margin: 0 auto;
+  background-color: #f8f5e9;
+  border: 2px solid #1c2438;
+  border-radius: 40px;
+  box-shadow: 10px 10px 0 #1c2438;
+  padding: 30px;
+  text-align: center;
+}
+
+/* PILLS */
+.entrar-pill {
+  display: inline-block;
+  background-color: #6db5c4;
+  border: 2px solid #1c2438;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #1c2438;
+}
+
+.entrar-pill-topo {
+  margin-bottom: 30px;
+}
+
+/* CARD BRANCO */
+.entrar-card {
+  background-color: #ffffff;
+  border: 2px solid #1c2438;
+  border-radius: 36px;
+  box-shadow: 6px 6px 0 #1c2438;
+  padding: 30px;
+  text-align: left;
+}
+
+.entrar-card h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin: 20px 0 8px;
+}
+
+.entrar-sub {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+/* CAMPOS */
+.entrar-campo {
+  margin-bottom: 20px;
+}
+
+.entrar-campo label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #35415e;
+  margin-bottom: 10px;
+}
+
+.entrar-campo input {
+  width: 100%;
+  height: 58px;
+  padding: 0 18px;
+  background-color: #ffffff;
+  border: 2px solid #1c2438;
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: 16px;
+  color: #1c2438;
+  outline: none;
+}
+
+.entrar-campo input::placeholder {
+  color: #a5a9b5;
+}
+
+.entrar-campo input:focus {
+  border-color: #e7837d;
+}
+
+/* LEMBRAR / ESQUECI */
+.entrar-opcoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.entrar-lembrar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.entrar-lembrar input {
+  width: 22px;
+  height: 22px;
+  accent-color: #e7837d;
+  cursor: pointer;
+}
+
+.entrar-esqueci {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #e7837d;
+  cursor: pointer;
+}
+
+.entrar-esqueci:hover {
+  text-decoration: underline;
+}
+
+/* BOTÃO ENTRAR */
+.entrar-btn-principal {
+  width: 100%;
+  height: 56px;
+  background-color: #1c2438;
+  border: none;
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.entrar-btn-principal span {
+  margin-left: 6px;
+}
+
+.entrar-btn-principal:hover {
+  background-color: #2c3652;
+  transform: translateY(-2px);
+}
+
+/* RODAPÉ DO CARD */
+.entrar-rodape {
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
+  margin-top: 25px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .entrar-page {
+    padding: 15px 15px 30px;
+  }
+
+  .entrar-moldura {
+    padding: 20px 15px;
+    border-radius: 30px;
+  }
+
+  .entrar-card {
+    padding: 22px 18px;
+    border-radius: 28px;
+  }
+
+  .entrar-card h1 {
+    font-size: 26px;
+  }
+
+  .entrar-logo {
+    height: 55px;
+  }
+}

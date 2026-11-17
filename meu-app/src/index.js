@@ -4,6 +4,7 @@ import './index.css';
 import App from './pages/app/App.js';
 import Contato from './pages/contato/index.jsx';
 import Login from './pages/login/index.jsx';
+import Entrar from './pages/entrar/index.jsx';
 import Naoencontrado from './pages/notfound/index.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/contato" element={<Contato />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/entrar" element={<Entrar />} />
         <Route path="*" element={<Naoencontrado />} />
       </Routes>
     </BrowserRouter>

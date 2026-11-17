@@ -1,9 +1,11 @@
 import './index.css';
 
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom"; // NOVO
 
 export default function Cadastro() {
+  const navigate = useNavigate(); // NOVO
+ 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -78,6 +80,14 @@ export default function Cadastro() {
 
           <div className="botaocriar">
             <button type="submit">Criar minha conta</button>
+          </div>
+
+          {/* NOVO: botão para quem já tem conta */}
+          <div className="botaoentrar">
+            <p>Já tem uma conta?</p>
+            <button type="button" onClick={() => navigate("/entrar")}>
+              Entrar
+            </button>
           </div>
         </form>
       </div>
